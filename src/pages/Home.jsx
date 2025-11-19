@@ -1,8 +1,8 @@
 import { Row } from "react-bootstrap";
-import CardMovie from "./CardMovie";
-import PaginationComponent from "./PaginationComponent";
+import CardMovie from "../components/CardMovie";
+import PaginationComponent from "../components/PaginationComponent";
 
-function MoviesList({ movies, getPage, pageCount, currentPage }) {
+function Home({ movies, getPage, pageCount, currentPage }) {
   return (
     <Row className="mt-3">
       {movies.length ? (
@@ -21,4 +21,4 @@ function MoviesList({ movies, getPage, pageCount, currentPage }) {
   );
 }
 
-export default MoviesList;
+export default Home;

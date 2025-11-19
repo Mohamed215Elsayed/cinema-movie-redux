@@ -1,4 +1,7 @@
-export const AllMOVIES = "AllMOVIES";
-export const MovieApi =
-  "https://api.themoviedb.org/3/movie/popular?api_key=190e39986dab0938986d1ec4cc5a6c93&language=ar";
-//"https://api.themoviedb.org/3/movie/popular?api_key=355f3cc55c1a5f8fb6f7b79d7541faea&language=ar&page=1"
+export const GET_ALL_MOVIES = "GET_ALL_MOVIES";
+export const SEARCH_MOVIES = "SEARCH_MOVIES";
+export const GET_PAGE = "GET_PAGE";
+
+export const MOVIE_DETAILS_REQUEST = "MOVIE_DETAILS_REQUEST";
+export const MOVIE_DETAILS_SUCCESS = "MOVIE_DETAILS_SUCCESS";
+export const MOVIE_DETAILS_FAIL = "MOVIE_DETAILS_FAIL";

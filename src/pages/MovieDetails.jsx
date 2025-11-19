@@ -1,31 +1,24 @@
-import React, { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getMovieDetails } from "../redux/actions/movieAction";
 import { Col, Row } from "react-bootstrap";
-import { Link, useParams } from "react-router-dom";
-import axios from "axios";
+import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const MovieDetails = () => {
   const { id } = useParams();
-  const [movie, setMovie] = useState({});
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+
+  const { movieDetails, loading, error } = useSelector(
+    (state) => state.movieDetails
+  );
 
   useEffect(() => {
-    const fetchMovie = async () => {
-      try {
-        const res = await axios.get(
-          `https://api.themoviedb.org/3/movie/${id}?api_key=52ef927bbeb21980cd91386a29403c78&language=ar`
-        );
-        setMovie(res.data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchMovie();
+    dispatch(getMovieDetails(id));
   }, [id]);
 
   if (loading) return <h3 className="text-center my-5">جاري التحميل...</h3>;
+  if (error) return <h3 className="text-center my-5">{error}</h3>;
 
   return (
     <motion.div
@@ -35,34 +28,35 @@ const MovieDetails = () => {
     >
       <Row className="justify-content-center">
         <Col md="12" className="mt-4">
-          <div className="card-detalis d-flex flex-wrap align-items-center">
-            {movie.poster_path && (
+          <div className="card-detalis d-flex flex-column flex-md-row align-items-center">
+            {movieDetails?.poster_path && (
               <motion.img
-                src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-                alt={movie.title}
+                src={`https://image.tmdb.org/t/p/w500/${movieDetails?.poster_path}`}
+                alt={movieDetails?.title}
                 className="img-movie"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6 }}
               />
             )}
+
             <motion.div
-              className="text-center mx-auto"
+              className="text-center mx-auto mt-3 mt-md-0"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               <p className="card-text-details border-bottom">
-                اسم الفيلم: {movie.title}
+                اسم الفيلم: {movieDetails?.title}
               </p>
               <p className="card-text-details border-bottom">
-                تاريخ الفيلم: {movie.release_date}
+                تاريخ الفيلم: {movieDetails?.release_date}
               </p>
               <p className="card-text-details border-bottom">
-                عدد المقيمين: {movie.vote_count}
+                عدد المقيمين: {movieDetails?.vote_count}
               </p>
               <p className="card-text-details border-bottom">
-                التقييم: {movie.vote_average}
+                التقييم: {movieDetails?.vote_average}
               </p>
             </motion.div>
           </div>
@@ -79,7 +73,7 @@ const MovieDetails = () => {
           >
             <p className="card-text-title border-bottom">القصة:</p>
             <p className="card-text-story">
-              {movie.overview || "لا توجد قصة متاحة."}
+              {movieDetails?.overview || "لا توجد قصة متاحة."}
             </p>
           </motion.div>
         </Col>
@@ -96,10 +90,11 @@ const MovieDetails = () => {
               العودة للرئيسية
             </motion.button>
           </Link>
-          {movie.homepage && (
+
+          {movieDetails?.homepage && (
             <motion.a
               whileHover={{ scale: 1.05 }}
-              href={movie.homepage}
+              href={movieDetails?.homepage}
               target="_blank"
               rel="noopener noreferrer"
             >

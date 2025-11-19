@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { moviesReducer } from "../reducers/movieReducer";
+import rootReducer from "../reducers/rootReducer";
+
 // Load state from localStorage
 function loadState() {
   try {
@@ -13,10 +14,11 @@ function loadState() {
 const persistedState = loadState();
 
 const store = configureStore({
-  moviesReducer: moviesReducer,
+  reducer: rootReducer,
   preloadedState: persistedState,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({ serializableCheck: false }),
 });
-
 // Save to localStorage on every change
 store.subscribe(() => {
   localStorage.setItem("redux-ex", JSON.stringify(store.getState()));

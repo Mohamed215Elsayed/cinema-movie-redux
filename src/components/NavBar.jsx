@@ -27,6 +27,8 @@ function NavBar({ search }) {
                 type="text"
                 className="form-control"
                 placeholder="ابحث"
+                id="search"
+                name="search"
               />
             </div>
           </Col>
