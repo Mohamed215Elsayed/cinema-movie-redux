@@ -1,19 +1,17 @@
-
 import ReactPaginate from "react-paginate";
 import { motion } from "framer-motion";
+import { useSelector, useDispatch } from "react-redux";
+import { getPage } from "../redux/actions/movieAction";
 
-const PaginationComponent = ({ getPage, pageCount, currentPage }) => {
+const PaginationComponent = () => {
+  const dispatch = useDispatch();
+  const { pageCount, currentPage } = useSelector((state) => state.movies);
   const handlePageClick = (data) => {
     const pageNum = data.selected + 1;
-    // Move to top smoothly
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-
-    getPage(pageNum);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    dispatch(getPage(pageNum));
   };
-
+  if (pageCount === 0) return null;
   return (
     <motion.div
       className="pagination-wrapper"

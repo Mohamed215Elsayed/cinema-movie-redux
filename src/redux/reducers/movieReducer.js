@@ -11,9 +11,9 @@ export const moviesReducer = (state = initialState, action) => {
     case GET_PAGE:
       return {
         ...state,
-        movies: action.payload.movies,//payload is an object{type,pages,[currentPage]}
-        pageCount: action.payload.pages,
-        currentPage: action.payload.currentPage || 1,
+        movies: action.payload?.movies || [], //payload is an object{type,pages,[currentPage]}
+        pageCount: action.payload?.pages || 0,
+        currentPage: action.payload?.currentPage || 1,
       };
 
     default:

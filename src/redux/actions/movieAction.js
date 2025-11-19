@@ -7,24 +7,23 @@ import {
   MOVIE_DETAILS_SUCCESS,
   MOVIE_DETAILS_FAIL,
 } from "../types/moviesType";
+const API_KEY = import.meta.env.VITE_API_KEY;
+const BASE = import.meta.env.VITE_BASE;
 
-const API_KEY = "190e39986dab0938986d1ec4cc5a6c93";
-const BASE = "https://api.themoviedb.org/3";
-
-/**
- * Get popular movies
- */
 export const getAllMovies = () => async (dispatch) => {
   try {
-    const { data } = await axios.get(
-      `${BASE}/movie/popular?api_key=${API_KEY}&language=ar`
-    );
+    const { data } = await axios.get(`${BASE}/movie/popular`, {
+      params: {
+        api_key: API_KEY,
+        language: "ar",
+      },
+    });
 
     dispatch({
-      type: GET_ALL_MOVIES,
+      type: "GET_ALL_MOVIES",
       payload: {
         movies: data.results,
-        pages: Math.min(data.total_pages, 500), //data is res.data
+        pages: Math.min(data.total_pages, 500),
         currentPage: 1,
       },
     });
@@ -38,11 +37,24 @@ export const getAllMovies = () => async (dispatch) => {
  */
 export const searchMovies = (word) => async (dispatch) => {
   try {
-    if (!word.trim()) return dispatch(getAllMovies());
+    if (!word.trim()) {
+      return dispatch({
+        type: GET_ALL_MOVIES,
+        payload: {
+          movies: [],
+          pages: 0,
+          currentPage: 1,
+        },
+      });
+    }
 
-    const { data } = await axios.get(
-      `${BASE}/search/movie?api_key=${API_KEY}&query=${word}&language=ar`
-    );
+    const { data } = await axios.get(`${BASE}/search/movie`, {
+      params: {
+        api_key: API_KEY,
+        query: word,
+        language: "ar",
+      },
+    });
 
     dispatch({
       type: SEARCH_MOVIES,

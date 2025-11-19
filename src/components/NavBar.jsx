@@ -1,14 +1,21 @@
-import React from "react";
+import { useRef, useCallback } from "react";
 import { Container, Col, Row } from "react-bootstrap";
 import { FaSearch } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { searchMovies } from "../redux/actions/movieAction";
 
-function NavBar({ search }) {
-  let timer;
-  const onSearch = (word) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => search(word), 300);
-  };
+function NavBar() {
+  const dispatch = useDispatch();
+  const timerRef = useRef(null);
+
+  const onSearch = useCallback((word) => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+
+    timerRef.current = setTimeout(() => {
+      dispatch(searchMovies(word));
+    }, 300);
+  }, [dispatch]);
 
   return (
     <div className="nav-style w-100">
